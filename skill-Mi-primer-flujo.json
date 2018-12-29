@@ -1,0 +1,294 @@
+{
+  "name": "Mi primer flujo",
+  "intents": [
+    {
+      "intent": "Saludo",
+      "examples": [
+        {
+          "text": "Hola, mucho gusto"
+        },
+        {
+          "text": "Buenas tardes"
+        },
+        {
+          "text": "Buenas noches"
+        },
+        {
+          "text": "Buenos dias"
+        },
+        {
+          "text": "Hola como estas"
+        },
+        {
+          "text": "Hola"
+        },
+        {
+          "text": "Que tal"
+        }
+      ],
+      "description": "saber cuando alguien saluda a mi asistente virtual"
+    },
+    {
+      "intent": "Comprar",
+      "examples": [
+        {
+          "text": "quiero comprar"
+        },
+        {
+          "text": "por favor quiero adquirir"
+        },
+        {
+          "text": "por favor quiero comprar"
+        },
+        {
+          "text": "deseo comprar"
+        }
+      ],
+      "description": "Intención para comprar"
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sys-number",
+      "values": []
+    },
+    {
+      "entity": "abarrote",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "golosina",
+          "synonyms": [
+            "caramelo",
+            "galleta",
+            "bizcocho",
+            "tarta",
+            "torta",
+            "galletas",
+            "bizcochos",
+            "turrón",
+            "empanadas",
+            "tortas",
+            "churros",
+            "empanada"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "bebida",
+          "synonyms": [
+            "cerveza",
+            "bebidas",
+            "cervezas",
+            "licor",
+            "limonada",
+            "whisky",
+            "vodka",
+            "alcohólicas",
+            "vino",
+            "saborizada",
+            "aquavit",
+            "zumos",
+            "coñac",
+            "anisado",
+            "brandy",
+            "brännvin",
+            "té",
+            "zumo",
+            "anís",
+            "jugos",
+            "tés"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "language": "es",
+  "metadata": {
+    "api_version": {
+      "major_version": "v1",
+      "minor_version": "2018-09-20"
+    }
+  },
+  "description": "",
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "parent": "node_7_1545890739638",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1545890816704",
+      "previous_sibling": "slot_9_1545890816709"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_7_1545890739638",
+      "metadata": {},
+      "variable": "$number",
+      "dialog_node": "slot_9_1545890816709"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "por favor indícame que abarrote deseas :c"
+      },
+      "parent": "slot_4_1545889821803",
+      "event_name": "focus",
+      "dialog_node": "handler_6_1545889821803",
+      "previous_sibling": "handler_5_1545889821803"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_4_1545889821803",
+      "context": {
+        "abarrote": "@abarrote"
+      },
+      "conditions": "@abarrote",
+      "event_name": "input",
+      "dialog_node": "handler_5_1545889821803"
+    },
+    {
+      "type": "frame",
+      "title": "Comprar",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "OK, así que quieres comprar $abarrote, cuántas unidades necesitas ?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "Bienvenido",
+      "metadata": {
+        "fallback": "leave"
+      },
+      "conditions": "#Comprar",
+      "dialog_node": "node_2_1545889687139",
+      "digress_out": "allow_all",
+      "digress_out_slots": "not_allowed"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_2_1545889687139",
+      "metadata": {},
+      "variable": "$abarrote",
+      "dialog_node": "slot_4_1545889821803",
+      "previous_sibling": "node_7_1545890739638"
+    },
+    {
+      "type": "event_handler",
+      "parent": "node_2_1545889687139",
+      "event_name": "focus",
+      "dialog_node": "handler_3_1545889821791",
+      "previous_sibling": "slot_4_1545889821803"
+    },
+    {
+      "type": "frame",
+      "title": "Cantidad",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Entonces tu pedido es de $number unidades de $abarrote"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1545889687139",
+      "metadata": {
+        "fallback": "leave"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "node_7_1545890739638",
+      "digress_out": "allow_all",
+      "digress_out_slots": "not_allowed"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": "Cuantas cantidades deseas ?"
+      },
+      "parent": "slot_9_1545890816709",
+      "event_name": "focus",
+      "dialog_node": "handler_11_1545890816709",
+      "previous_sibling": "handler_10_1545890816709"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_9_1545890816709",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_10_1545890816709"
+    },
+    {
+      "type": "standard",
+      "title": "En otras cosas",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "No le he entendido. Intente reformular la consulta."
+              },
+              {
+                "text": "¿Puede expresarse con otras palabras? No le he entendido."
+              },
+              {
+                "text": "No entendí el significado."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "anything_else",
+      "dialog_node": "En otras cosas",
+      "previous_sibling": "Bienvenido"
+    },
+    {
+      "type": "standard",
+      "title": "Bienvenido",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hola. ¿Cómo puedo ayudarle?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "#Saludo",
+      "dialog_node": "Bienvenido"
+    }
+  ],
+  "workspace_id": "c881a078-65b7-490a-ba38-5d4f138c5d83",
+  "counterexamples": [],
+  "system_settings": {
+    "tooling": {
+      "store_generic_responses": true
+    }
+  },
+  "learning_opt_out": false,
+  "status": "Available"
+}
